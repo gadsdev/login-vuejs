@@ -1,5 +1,18 @@
 <template>
-  <div class="about">
-    <h1>This is an about page</h1>
+  <div class="home">
+    <img alt="Vue logo" src="../assets/logo.png">
+    <FormCadastro/>
   </div>
 </template>
+
+<script>
+// @ is an alias to /src
+import FormCadastro from '../components/login-form/FormCadastro';
+
+export default {
+  name: 'home',
+  components: {
+    FormCadastro,
+  },
+};
+</script>
