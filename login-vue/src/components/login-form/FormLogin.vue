@@ -26,13 +26,13 @@
         ></v-text-field>
     
         <v-text-field
-            v-model="senha"
-            :error-messages="nameErrors"
+            v-model="password"
+            :error-messages="passwordErrors"
             :counter="10"
             label="Senha"
             required
-            @input="$v.name.$touch()"
-            @blur="$v.name.$touch()"
+            @input="$v.password.$touch()"
+            @blur="$v.password.$touch()"
             type="password"
         ></v-text-field>       
        
@@ -54,7 +54,7 @@
       <v-btn        
         color="blue"
         depressed
-        @click="validate"
+        @click="submit"
       >
       Entrar
       </v-btn>      
@@ -69,23 +69,63 @@
 
 <script>
 import { validationMixin } from 'vuelidate'
-import { required, maxLength, email } from 'vuelidate/lib/validators'
+import { required, minLength, email } from 'vuelidate/lib/validators'
 
 export default {
-  name: 'FormLogin',   
+  name: 'FormLogin',  
+
+  mixins: [validationMixin],
+  // Validações
+  validations: {
+      password: { required, minLength: minLength(3) },
+      email: { required, email },       
+  },
+
+  data: () => ({
+      password: '',
+      email: '',     
+  }),
+
+  computed: {     
+      //Mensagem de erro da senha
+      passwordErrors () {
+        const errors = []
+        if (!this.$v.password.$dirty) return errors
+        // Menro que o minLength
+        !this.$v.password.minLength && errors.push('Senha deve ser maior que 3 digitos')
+        // Vazio
+        !this.$v.password.required && errors.push('Preencha a senha.')
+        return errors
+      },
+      emailErrors () {
+        const errors = []
+        if (!this.$v.email.$dirty) return errors
+        // Não é email
+        !this.$v.email.email && errors.push('E-mail não cadastrado')
+        // Vazio
+        !this.$v.email.required && errors.push('Preencha o E-mail')
+        return errors
+      }
+    },
+
+  
   methods: {
+      // Se valido tenta fazer login
       validate () {
         if (this.$refs.form.validate()) {
           this.snackbar = true
         }
-      }
+      },
+      submit () {
+        this.$v.$touch()
+      },
   }
 };
 </script>
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
-h3 {
+label {
   color:brown
 }
 </style>
