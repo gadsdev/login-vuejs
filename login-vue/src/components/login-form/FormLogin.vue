@@ -70,6 +70,7 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength, email } from 'vuelidate/lib/validators'
+import Crud from '../../services/loginApi'
 
 export default {
   name: 'FormLogin',  

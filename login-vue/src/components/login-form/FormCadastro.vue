@@ -45,9 +45,8 @@
             @input="$v.confPassword.$touch()"
             @blur="$v.confPassword.$touch()"
             type="password"
-        ></v-text-field>       
-       
-          
+        ></v-text-field>      
+        
         <span class="caption grey--text text--darken-1">
            Já tem uma conta ? Clique Aki
         </span>
@@ -66,13 +65,14 @@
         color="blue"
         depressed
         @click="submit"
+        
       >
       Cadastrar
       </v-btn>      
 
       <v-spacer></v-spacer>
 
-    </v-card-actions>
+    </v-card-actions>   
 
   </v-card>
 
@@ -99,7 +99,7 @@ export default {
       email: '',     
       password: '',   
       confPassword: '',  
-      submitStatus: null
+      submitStatus: null,      
   }),
 
   computed: {     
@@ -113,6 +113,7 @@ export default {
         !this.$v.password.required && errors.push('Preencha a senha.')
         return errors
       },
+      //Mensagem de erro confirmação da senha
       confPasswordErrors () {
         const errors = []
         if (!this.$v.confPassword.$dirty) return errors
@@ -136,24 +137,30 @@ export default {
 
   
   methods: {      
-      submit () {
+      async submit () {
         // Pŕe validate
         this.$v.$touch()       
         if(!this.$v.$invalid){
-           console.log('Valido', this.cadastro())
+            const response = await this.cadastro()
+
+            console.log('statusCode', response.status);
+           if(response.status === 500){
+              alert('Conta cadastrada com sucesso!');
+           }else if(response.statusCode === 500){            
+              alert('E-mail já cadastrado!');
+           }
         }       
       },
 
-      async cadastro() {
+      async cadastro() {        
         let user = {
           username: 'Josep',
           password: this.password,
           email: this.email,
-        };
-        alert('Cadastrado com sucesso!')
-        const response = await Crud.cadastro(user)
-        
-        return response
+        };       
+          const response = await Crud.cadastro(user);          
+
+          return response;
       }
   }
 };
