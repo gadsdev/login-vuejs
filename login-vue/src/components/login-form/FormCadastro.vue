@@ -15,6 +15,15 @@
     <v-window>
       <v-window-item>
         <v-card-text>
+          <v-text-field
+            v-model="username"
+            :error-messages="nameError"
+            label="Nome de Usuario"
+            required
+            @input="$v.username.$touch()"
+            @blur="$v.username.$touch()"
+        ></v-text-field>
+          
 
          <v-text-field
             v-model="email"
@@ -97,9 +106,11 @@ export default {
       password: { required, minLength: minLength(3) },
       email: { required, email },       
       confPassword: { required, sameAs: sameAs('password') },
+      username: {required, minLength: minLength(3)}
   },
 
   data: () => ({
+      username: '',
       email: '',     
       password: '',   
       confPassword: '',  
@@ -108,6 +119,15 @@ export default {
   }),
 
   computed: {     
+      nameError () {
+        const errors = []
+        if (!this.$v.username.$dirty) return errors
+        // Menro que o minLength
+        !this.$v.username.minLength && errors.push('O nome deve ter mais de 3 digitos')
+        // Vazio
+        !this.$v.username.required && errors.push('Preencha o nome.')
+        return errors
+      },
       //Mensagem de erro da senha
       passwordErrors () {
         const errors = []
@@ -158,7 +178,7 @@ export default {
 
       async cadastro() {        
         let user = {
-          username: 'Josep',
+          username: this.username,
           password: this.password,
           email: this.email,
         };       
