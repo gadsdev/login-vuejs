@@ -49,7 +49,7 @@
        
           
         <span class="caption grey--text text--darken-1">
-           Já tem uma conta ?
+           Já tem uma conta ? Clique Aki
         </span>
 
         </v-card-text>
@@ -97,6 +97,7 @@ export default {
       email: '',     
       password: '',   
       confPassword: '',  
+      submitStatus: null
   }),
 
   computed: {     
@@ -126,23 +127,19 @@ export default {
         !this.$v.email.email && errors.push('E-mail Invalido')
         // Vazio
         !this.$v.email.required && errors.push('Preencha o E-mail')
+
         return errors
       }
     },
 
   
-  methods: {
-      // Se valido tenta fazer login
-      validate () {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
-      },
+  methods: {      
       submit () {
         // Pŕe validate
-        this.$v.$touch()
-        console.log('email',this.email)
-        console.log('password',this.password) 
+        this.$v.$touch()       
+        if(!this.$v.$invalid){
+           console.log('Valido')
+        }       
       },
   }
 };

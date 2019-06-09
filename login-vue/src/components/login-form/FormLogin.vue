@@ -119,8 +119,9 @@ export default {
       submit () {
         // Pŕe validate
         this.$v.$touch()
-        console.log('email',this.email)
-        console.log('password',this.password) 
+        if(!this.$v.$invalid){
+           console.log('Valido')
+        }    
       },
   }
 };
