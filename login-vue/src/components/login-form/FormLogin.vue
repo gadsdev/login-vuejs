@@ -12,7 +12,7 @@
       ></v-avatar>
     </v-card-title>
 
-    <v-window v-model="step">
+    <v-window>
       <v-window-item>
         <v-card-text>
 
@@ -28,7 +28,7 @@
         <v-text-field
             v-model="password"
             :error-messages="passwordErrors"
-            :counter="10"
+            :counter="3"
             label="Senha"
             required
             @input="$v.password.$touch()"
@@ -82,8 +82,8 @@ export default {
   },
 
   data: () => ({
-      password: '',
       email: '',     
+      password: '',     
   }),
 
   computed: {     
@@ -117,7 +117,10 @@ export default {
         }
       },
       submit () {
+        // Pŕe validate
         this.$v.$touch()
+        console.log('email',this.email)
+        console.log('password',this.password) 
       },
   }
 };
