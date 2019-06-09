@@ -45,8 +45,12 @@
             @input="$v.confPassword.$touch()"
             @blur="$v.confPassword.$touch()"
             type="password"
-        ></v-text-field>      
-        
+        ></v-text-field>   
+
+        <b-alert v-model="errorAlert" variant="danger" dismissible>
+          Este E-mail já esta cadastrado!
+        </b-alert>
+
         <span class="caption grey--text text--darken-1">
            Já tem uma conta ? Clique Aki
         </span>
@@ -99,7 +103,8 @@ export default {
       email: '',     
       password: '',   
       confPassword: '',  
-      submitStatus: null,      
+      submitStatus: null,    
+      errorAlert: false,  
   }),
 
   computed: {     
@@ -137,17 +142,16 @@ export default {
 
   
   methods: {      
-      async submit () {
+      async submit () {     
         // Pŕe validate
-        this.$v.$touch()       
+        this.$v.$touch()   
         if(!this.$v.$invalid){
-            const response = await this.cadastro()
-
-            console.log('statusCode', response.status);
-           if(response.status === 500){
+            const response = await this.cadastro()         
+           if(response.status === 200){
               alert('Conta cadastrada com sucesso!');
-           }else if(response.statusCode === 500){            
-              alert('E-mail já cadastrado!');
+                this.$router.push({name: 'home'})              
+           }else if(response.statusCode === 500){ 
+              this.showErrorAlert();
            }
         }       
       },
@@ -161,6 +165,10 @@ export default {
           const response = await Crud.cadastro(user);          
 
           return response;
+      },
+
+      showErrorAlert() {
+        this.errorAlert = true;
       }
   }
 };
