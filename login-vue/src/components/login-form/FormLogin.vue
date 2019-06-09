@@ -34,8 +34,11 @@
             @input="$v.password.$touch()"
             @blur="$v.password.$touch()"
             type="password"
-        ></v-text-field>       
-       
+        ></v-text-field>  
+
+        <b-alert v-model="errorAlert" variant="danger" dismissible>
+          {{ errMsg }}
+        </b-alert>
           
         <span class="caption grey--text text--darken-1">
            Esquesceu sua senha ?
@@ -84,7 +87,9 @@ export default {
 
   data: () => ({
       email: '',     
-      password: '',     
+      password: '',  
+      errorAlert: false,  
+      errMsg: '',   
   }),
 
   computed: {     
@@ -110,20 +115,36 @@ export default {
     },
 
   
-  methods: {
-      // Se valido tenta fazer login
-      validate () {
-        if (this.$refs.form.validate()) {
-          this.snackbar = true
-        }
-      },
-      submit () {
+  methods: {      
+     async submit () {     
         // Pŕe validate
-        this.$v.$touch()
+        this.$v.$touch()   
         if(!this.$v.$invalid){
-           console.log('Valido')
-        }    
+          const response = await this.login()          
+            if(response.status === 200){
+              alert('Logado com sucesso!');
+              const token = response.data.token
+              this.$router.push({name: 'home'})              
+            }else if(response.statusCode === 401){ 
+              this.showErrorAlert(response.message);
+            }
+        }       
       },
+      async login() {        
+        let user = {       
+          password: this.password,
+          email: this.email,
+        };       
+          const response = await Crud.login(user);          
+
+          return response;
+      },
+
+      showErrorAlert(msg) {
+        this.errorAlert = true;
+        this.errMsg = msg;
+      }
+
   }
 };
 </script>
