@@ -1,5 +1,5 @@
 <template>
-  <div class="home">
+  <div class="cadastro">
     <img alt="Vue logo" src="../assets/logo.png">
     <FormCadastro/>
   </div>
@@ -10,7 +10,7 @@
 import FormCadastro from '../components/login-form/FormCadastro';
 
 export default {
-  name: 'home',
+  name: 'cadastro',
   components: {
     FormCadastro,
   },
