@@ -81,6 +81,8 @@
 <script>
 import { validationMixin } from 'vuelidate'
 import { required, minLength, email, sameAs } from 'vuelidate/lib/validators'
+// Curd de Auth
+import Crud from '../../services/loginApi'
 
 export default {
   name: 'FormCadastro',  
@@ -138,9 +140,21 @@ export default {
         // Pŕe validate
         this.$v.$touch()       
         if(!this.$v.$invalid){
-           console.log('Valido')
+           console.log('Valido', this.cadastro())
         }       
       },
+
+      async cadastro() {
+        let user = {
+          username: 'Josep',
+          password: this.password,
+          email: this.email,
+        };
+        alert('Cadastrado com sucesso!')
+        const response = await Crud.cadastro(user)
+        
+        return response
+      }
   }
 };
 </script>
