@@ -3,6 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "heroku-postbuild": "yarn install --only=dev --no-shrinkwrap && yarn run build",
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
@@ -13,8 +14,9 @@
     "bootstrap": "^4.3.1",
     "bootstrap-vue": "^2.0.0-rc.22",
     "core-js": "^2.6.5",
-    "express": "^4.17.1",
+    "express": "^4.17.1",    
     "vue": "^2.6.10",
+    "vue-cli": "^2.9.6",
     "vue-router": "^3.0.3",
     "vuelidate": "^0.7.4",
     "vuetify": "^1.5.14",
